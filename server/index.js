@@ -3,11 +3,16 @@ const cors = require('cors');
 const axios = require('axios');
 const { getPortfolio, addStock, removeStock } = require('./database');
 
+const path = require('path');
+
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../dist')));
 
 const YAHOO_API_BASE = 'https://query1.finance.yahoo.com/v8/finance/chart';
 
@@ -170,6 +175,12 @@ app.get('/api/search', async (req, res) => {
         console.error('Search error:', err.message);
         res.status(500).json({ error: 'Search failed' });
     }
+});
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 app.listen(PORT, () => {

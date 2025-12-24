@@ -1,7 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const dbPath = path.resolve(__dirname, 'stocks.db');
+const dbPath = process.env.RAILWAY_VOLUME_MOUNT_PATH
+    ? path.join(process.env.RAILWAY_VOLUME_MOUNT_PATH, 'stocks.db')
+    : path.resolve(__dirname, 'stocks.db');
 
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
