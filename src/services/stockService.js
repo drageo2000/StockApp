@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = '/api';
 
 export const getPortfolioStocks = async (range = '1d') => {
   const response = await fetch(`${API_BASE}/portfolio?range=${range}&_t=${Date.now()}`);
